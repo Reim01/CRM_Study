@@ -363,8 +363,8 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #Backup
-.Backup
+*.Backup
 Backup.*
 
 #db
-.db
+*.db
