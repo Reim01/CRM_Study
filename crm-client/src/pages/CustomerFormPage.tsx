@@ -1,24 +1,25 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
-import type { CustomerStatus, NewCustomer } from '../types/customer'
+import type { Customer, CustomerStatus, NewCustomer } from '../types/customer'
 
 type CustomerFormPageProps = {
-  onCreate: (customer: NewCustomer) => void
+    customer?: Customer
+    onSubmit: (customer: NewCustomer) => Promise<void>
 }
 
-function CustomerFormPage({ onCreate }: CustomerFormPageProps){
+function CustomerFormPage({ customer, onSubmit }: CustomerFormPageProps){
     const navigate = useNavigate()
 
-    const [name, setName] = useState('')
-    const [company, setCompany] = useState('')
-    const [email, setEmail] = useState('')
-    const [status, setStatus] = useState<CustomerStatus>('잠재 고객')
+    const [name, setName] = useState(customer?.name ?? '')
+    const [company, setCompany] = useState(customer?.company ?? '')
+    const [email, setEmail] = useState(customer?.email ?? '')
+    const [status, setStatus] = useState<CustomerStatus>(customer?.status ?? '잠재 고객')
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
 
         try{
-            await onCreate({
+            await onSubmit({
                 name,
                 company,
                 email,
@@ -37,8 +38,10 @@ function CustomerFormPage({ onCreate }: CustomerFormPageProps){
                 ← 고객 목록으로
             </Link>
 
-            <p className="eyebrow">NEW CUSTOMER</p>
-            <h2>고객 등록</h2>
+            <p className="eyebrow">
+                {customer ? 'EDIT CUSTOMER' : 'NEW CUSTOMER'}
+            </p>
+            <h2>{customer? '고객 수정' : '고객 등록'}</h2>
 
             <form className="customer-form" onSubmit={handleSubmit}>
                 <label>

@@ -308,11 +308,19 @@ tr:last-child td {
   background: #fef2f2;
 }
 
+.edit-button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #1d4ed8;
+  background: #dbeafe;
+  text-decoration: none;
+}
+
 /* mobile */
 @media (max-width: 720px) {
   .app-shell {
     display: block;
-  }
+  }ㅊ
 
   .sidebar {
     width: 100%;

@@ -3,7 +3,7 @@ import type { Customer } from '../types/customer'
 
 type CustomerDetailPageProps = {
   customers: Customer[]
-  onDelete: (customerId: number) => void
+  onDelete: (customerId: number) => Promise<void>
 }
 
 
@@ -50,6 +50,9 @@ function CustomerDetailPage({ customers, onDelete, }: CustomerDetailPageProps){
                 <p><strong>이메일</strong> {customer.email}</p>
                 <p><strong>상태</strong> {customer.status}</p>
                 <div className="detail-actions">
+                    <Link className="edit-button" to={`/customers/${customer.id}/edit`}>
+                        고객 수정
+                    </Link>
                     <button className="danger-button" type="button" onClick={() => handleDelete(customer.id, customer.name)}>
                         고객 삭제
                     </button>

@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { NavLink, Route, Routes } from 'react-router'
 
 import type { Customer, NewCustomer } from './types/customer'
-import { createCustomer, deleteCustomer, getCustomers, } from './api/customers'
+import { createCustomer, deleteCustomer, getCustomers, updateCustomer as updateCustomerRequest,} from './api/customers'
 
 import DashboardPage from './pages/DashboardPage'
 import CustomerDetailPage from './pages/CustomerDetailPage'
 import CustomerFormPage from './pages/CustomerFormPage'
+import CustomerEditPage from './pages/CustomerEditPage'
 
 import './index.css'
 
@@ -18,12 +19,6 @@ function App() {
   useEffect(() =>{
     async function loadCustomers() {
       try{
-        const response = await fetch('https://localhost:7033/api/customers')
-
-        if(!response.ok){
-          throw new Error('고객 목록을 불러오지 못했습니다.')
-        }
-
         const data = await getCustomers()
         setCustomers(data)
       } catch {
@@ -35,7 +30,7 @@ function App() {
 
     loadCustomers()
   }, [])
-
+  
   async function addCustomer(customer: NewCustomer){
     const createdCustomer = await createCustomer(customer)
 
@@ -50,6 +45,16 @@ function App() {
     
     setCustomers((currentCustomers) =>
       currentCustomers.filter((customer) => customer.id !== customerId),
+    )
+  }
+
+  async function updateCustomer(customerId: number, customer: NewCustomer,): Promise<void> {
+    const updatedCustomer = await updateCustomerRequest(customerId, customer)
+
+    setCustomers((currentCustomers) =>
+      currentCustomers.map((item) =>
+        item.id === customerId ? updatedCustomer : item,
+      ),
     )
   }
 
@@ -83,8 +88,9 @@ function App() {
         {!isLoading && !error && (
           <Routes>
             <Route path="/" element={<DashboardPage customers={customers} />} />
-            <Route path="/customers/new" element={<CustomerFormPage onCreate={addCustomer} />} />
-            <Route path="/customers/:customerId" element={<CustomerDetailPage customers={customers} onDelete={removeCustomer} />} />          
+            <Route path="/customers/new" element={<CustomerFormPage onSubmit={addCustomer} />} />
+            <Route path="/customers/:customerId" element={<CustomerDetailPage customers={customers} onDelete={removeCustomer} />} />
+            <Route path="/customers/:customerId/edit" element={<CustomerEditPage customers={customers} onUpdate={updateCustomer} />} />
           </Routes>
         )}        
       </section>      

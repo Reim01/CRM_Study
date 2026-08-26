@@ -37,3 +37,19 @@ export async function deleteCustomer(customerId: number): Promise<void> {
         throw new Error('고객을 삭제하지 못했습니다.')
     }
 }
+
+export async function updateCustomer(customerId: number, customer: NewCustomer,): Promise<Customer> {
+    const response = await fetch(`${API_URL}/${customerId}`, {
+        method: 'PUT',
+        headers:{
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customer),
+    })
+
+    if(!response.ok){
+        throw new Error('고객 정보를 수정하지 못했습니다.')
+    }
+
+    return (await response.json()) as Customer
+}

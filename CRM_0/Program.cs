@@ -33,7 +33,7 @@ internal class Program
         {
             var db = scope.ServiceProvider.GetRequiredService<CrmDbContext>();
 
-            db.Database.EnsureCreated();
+            db.Database.Migrate();
 
             if (!db.Customers.Any())
             {
@@ -89,6 +89,25 @@ internal class Program
             await db.SaveChangesAsync();
 
             return Results.Created($"/api/customers/{customer.Id}", customer);
+        });
+
+        app.MapPut("/api/customers/{id:int}", async (int id, CreateCustomerRequest request, CrmDbContext db) =>
+        {
+            var customer = await db.Customers.FindAsync(id);
+
+            if (customer is null)
+            {
+                return Results.NotFound();
+            }
+
+            customer.Name = request.Name;
+            customer.Company = request.Company;
+            customer.Email = request.Email;
+            customer.Status = request.Status;
+
+            await db.SaveChangesAsync();
+
+            return Results.Ok(customer);
         });
 
         app.MapDelete("/api/customers/{id:int}", async (int id, CrmDbContext db) =>
