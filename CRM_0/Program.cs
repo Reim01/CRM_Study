@@ -125,6 +125,48 @@ internal class Program
             return Results.NoContent();
         });
 
+        app.MapGet("/api/customers/{id:int}/activities", async (int id, CrmDbContext db) =>
+        {
+            var customerExists = await db.Customers.AnyAsync(customer => customer.Id == id);
+
+            if (!customerExists)
+            {
+                return Results.NotFound();
+            }
+
+            var activities = await db.CustomerActivities
+                .AsNoTracking()
+                .Where(activity => activity.CustomerId == id)
+                .OrderByDescending(ACTIVITY => ACTIVITY.OccurredAt)
+                .ToListAsync();
+
+            return Results.Ok(activities);
+        });
+
+        app.MapPost("/api/customers/{id:int}/activities", async (int id, CreateCustomerActivityRequest request, CrmDbContext db) =>
+        {
+            var customerExists = await db.Customers.AnyAsync(customer => customer.Id == id);
+
+            if (!customerExists)
+            {
+                return Results.NotFound();
+            }
+
+            var activity = new CustomerActivity
+            {
+                CustomerId = id,
+                Type = request.Type,
+                Content = request.Content,
+                OccurredAt = DateTime.UtcNow,
+
+            };
+
+            db.CustomerActivities.Add(activity);
+            await db.SaveChangesAsync();
+
+            return Results.Created($"/api/customers/{id}/activities/{activity.Id}", activity);
+        });
+
         app.Run();
     }
 }

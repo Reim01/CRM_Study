@@ -9,3 +9,20 @@ export type Customer = {
 }
 
 export type NewCustomer = Omit<Customer, 'id'>
+
+///
+
+export type ActivityType = '전화' | '이메일' | '미팅' | '메모'
+
+export type CustomerActivity ={
+    id: number
+    customerId: number
+    type: ActivityType
+    content: string
+    occuredAt: string
+}
+
+export type NewCustomerActivity = {
+    type: ActivityType
+    content: string
+}
