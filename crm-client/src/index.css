@@ -316,6 +316,64 @@ tr:last-child td {
   text-decoration: none;
 }
 
+.activity-section {
+  max-width: 760px;
+  margin-top: 36px;
+}
+
+.activity-form {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.activity-form select,
+.activity-form input {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.activity-list {
+  display: grid;
+  gap: 10px;
+}
+
+.activity-item {
+  padding: 16px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.activity-item p {
+  margin: 10px 0;
+}
+
+.activity-type {
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.activity-item time,
+.empty-activities {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.activity-error {
+  color: #b91c1c;
+}
+
+@media (max-width: 720px) {
+  .activity-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* mobile */
 @media (max-width: 720px) {
   .app-shell {

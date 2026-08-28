@@ -1,4 +1,4 @@
-import type { Customer, NewCustomer } from '../types/customer'
+import type { Customer, CustomerActivity, NewCustomer, NewCustomerActivity, } from '../types/customer'
 
 const API_URL = 'https://localhost:7033/api/customers'
 
@@ -52,4 +52,30 @@ export async function updateCustomer(customerId: number, customer: NewCustomer,)
     }
 
     return (await response.json()) as Customer
+}
+
+export async function getCustomerActivities(customerId: number,): Promise<CustomerActivity[]>{
+    const response = await fetch(`${API_URL}/${customerId}/activities`)
+
+    if(!response.ok){
+        throw new Error('활동 이력을 불러오지 못했습니다.')
+    }
+
+    return (await response.json()) as CustomerActivity[]
+}
+
+export async function createCustomerActivity(customerId: number, activity: NewCustomerActivity): Promise<CustomerActivity>{
+    const response = await fetch(`${API_URL}/${customerId}/activities`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(activity),
+    })
+
+    if(!response.ok){
+        throw new Error('활동 이력을 등록하지 못했습니다.')
+    }
+
+    return (await response.json()) as CustomerActivity
 }

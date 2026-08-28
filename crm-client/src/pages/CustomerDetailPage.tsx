@@ -1,6 +1,8 @@
 import { Link, useNavigate, useParams }  from 'react-router'
 import type { Customer } from '../types/customer'
 
+import CustomerActivitySection from '../components/CustomerActivitySection'
+
 type CustomerDetailPageProps = {
   customers: Customer[]
   onDelete: (customerId: number) => Promise<void>
@@ -58,6 +60,8 @@ function CustomerDetailPage({ customers, onDelete, }: CustomerDetailPageProps){
                     </button>
                 </div>
             </article>
+
+            <CustomerActivitySection customerId={customer.id} />
         </section>
     )
 }

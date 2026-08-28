@@ -19,7 +19,7 @@ export type CustomerActivity ={
     customerId: number
     type: ActivityType
     content: string
-    occuredAt: string
+    occurredAt: string
 }
 
 export type NewCustomerActivity = {
