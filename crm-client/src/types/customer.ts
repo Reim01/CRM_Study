@@ -26,3 +26,22 @@ export type NewCustomerActivity = {
     type: ActivityType
     content: string
 }
+
+///
+
+export type DealStage = '잠재' | '협의' | '제안' | '계약' | '실패'
+
+export type Deal = {
+    id: number
+    customerId: number
+    title: string
+    expectedAmount: number
+    stage: DealStage
+    createdAt: string
+}
+
+export type NewDeal = {
+    title: string
+    expectedAmount: number
+    stage: DealStage
+}

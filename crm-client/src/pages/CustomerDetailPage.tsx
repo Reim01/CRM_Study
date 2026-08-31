@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams }  from 'react-router'
 import type { Customer } from '../types/customer'
 
 import CustomerActivitySection from '../components/CustomerActivitySection'
+import CustomerDealSection from '../components/CustomerDealSection'
 
 type CustomerDetailPageProps = {
   customers: Customer[]
@@ -62,6 +63,7 @@ function CustomerDetailPage({ customers, onDelete, }: CustomerDetailPageProps){
             </article>
 
             <CustomerActivitySection customerId={customer.id} />
+            <CustomerDealSection customerId={customer.id} />
         </section>
     )
 }

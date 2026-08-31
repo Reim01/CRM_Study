@@ -374,6 +374,58 @@ tr:last-child td {
   }
 }
 
+.deal-section {
+  max-width: 760px;
+  margin-top: 36px;
+}
+
+.deal-form {
+  display: grid;
+  grid-template-columns: 1fr 160px 100px auto;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.deal-form input,
+.deal-form select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.deal-list {
+  display: grid;
+  gap: 10px;
+}
+
+.deal-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 8%);
+}
+
+.deal-item p {
+  margin: 6px 0 0;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.deal-item span {
+  font-weight: bold;
+}
+
+@media (max-width: 720px) {
+  .deal-form {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* mobile */
 @media (max-width: 720px) {
   .app-shell {

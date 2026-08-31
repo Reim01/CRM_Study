@@ -12,6 +12,8 @@ namespace CRM_0.Data
 
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<CustomerActivity> CustomerActivities => Set<CustomerActivity>();
+        public DbSet<Deal> Deals => Set<Deal>();
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +22,16 @@ namespace CRM_0.Data
                 .WithMany(customer => customer.Activities)
                 .HasForeignKey(activity => activity.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Deal>()
+                .HasOne(deal => deal.Customer)
+                .WithMany(customer => customer.Deals)
+                .HasForeignKey(deal => deal.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Deal>()
+                .Property(deal => deal.ExpectedAmount)
+                .HasPrecision(18, 2);
         }
     }
 }

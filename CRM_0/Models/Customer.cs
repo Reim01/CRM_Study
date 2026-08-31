@@ -13,5 +13,7 @@
         public string Status { get; set; } = string.Empty;
 
         public List<CustomerActivity> Activities { get; set; } = new();
+
+        public List<Deal> Deals { get; set; } = new();
     }
 }

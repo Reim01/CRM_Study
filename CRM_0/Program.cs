@@ -167,6 +167,48 @@ internal class Program
             return Results.Created($"/api/customers/{id}/activities/{activity.Id}", activity);
         });
 
+        app.MapGet("/api/customers/{id:int}/deals", async (int id, CrmDbContext db) =>
+        {
+            var customerExists = await db.Customers.AnyAsync(customer => customer.Id == id);
+
+            if (!customerExists)
+            {
+                return Results.NotFound();
+            }
+
+            var deals = await db.Deals
+                .AsNoTracking()
+                .Where(deal => deal.CustomerId == id)
+                .OrderByDescending(deal => deal.CreatedAt)
+                .ToListAsync();
+
+            return Results.Ok(deals);
+        });
+
+        app.MapPost("/api/customers/{id:int}/deals", async (int id, CreateDealRequest request, CrmDbContext db) =>
+        {
+            var customerExists = await db.Customers.AnyAsync(customer => customer.Id == id);
+
+            if (!customerExists)
+            {
+                return Results.NotFound();
+            }
+
+            var deal = new Deal
+            {
+                CustomerId = id,
+                Title = request.Title,
+                ExpectedAmount = request.ExpectedAmount,
+                Stage = request.Stage,
+                CreatedAt = DateTime.UtcNow,
+            };
+
+            db.Deals.Add(deal);
+            await db.SaveChangesAsync();
+
+            return Results.Created($"/api/customers/{id}/deals/{deal.Id}", deal);
+        });
+
         app.Run();
     }
 }

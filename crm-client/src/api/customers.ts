@@ -1,4 +1,4 @@
-import type { Customer, CustomerActivity, NewCustomer, NewCustomerActivity, } from '../types/customer'
+import type { Customer, CustomerActivity, NewCustomer, NewCustomerActivity, Deal, NewDeal, } from '../types/customer'
 
 const API_URL = 'https://localhost:7033/api/customers'
 
@@ -78,4 +78,35 @@ export async function createCustomerActivity(customerId: number, activity: NewCu
     }
 
     return (await response.json()) as CustomerActivity
+}
+
+export async function getCustomerDeals(
+  customerId: number,
+): Promise<Deal[]> {
+  const response = await fetch(`${API_URL}/${customerId}/deals`)
+
+  if (!response.ok) {
+    throw new Error('거래 목록을 불러오지 못했습니다.')
+  }
+
+  return (await response.json()) as Deal[]
+}
+
+export async function createCustomerDeal(
+  customerId: number,
+  deal: NewDeal,
+): Promise<Deal> {
+  const response = await fetch(`${API_URL}/${customerId}/deals`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(deal),
+  })
+
+  if (!response.ok) {
+    throw new Error('거래를 등록하지 못했습니다.')
+  }
+
+  return (await response.json()) as Deal
 }
